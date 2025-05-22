@@ -8,6 +8,9 @@ jobs:
   attach-artifact:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write  # Required to upload release assets
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -15,9 +18,7 @@ jobs:
       - name: Archive release artifact
         run: zip release-asset.zip artifact.txt
 
-      - name: Upload asset to release
+      - name: Upload asset to GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           files: release-asset.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
