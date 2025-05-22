@@ -1,0 +1,23 @@
+name: Release Artifact Automation
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  attach-artifact:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Archive release artifact
+        run: zip release-asset.zip artifact.txt
+
+      - name: Upload asset to release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: release-asset.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
